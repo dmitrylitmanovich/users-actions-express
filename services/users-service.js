@@ -1,10 +1,7 @@
 const express = require('express');
-const router = express.Router();
+export const router = express.Router();
 
-const Provider = require('../providers/postgresql-provider');
-
-const provider = new Provider();
-const db = provider.connect();
+import performDatabaseOperation from '../providers/pg-performer';
 
 router.post('/users', async (req, res) => {
   const { name, email } = req.body;
@@ -12,7 +9,7 @@ router.post('/users', async (req, res) => {
   const values = [name, email];
 
   try {
-    const result = await db.query(query, values);
+    const result = await performDatabaseOperation(query, values);
     res.json({ id: result.rows[0].id });
   } catch (err) {
     console.error(err);
@@ -27,7 +24,7 @@ router.put('/users/:id', async (req, res) => {
   const values = [name, email, id];
 
   try {
-    await db.query(query, values);
+    await performDatabaseOperation(query, values);
     res.json({ message: 'User updated successfully' });
   } catch (err) {
     console.error(err);
@@ -38,7 +35,7 @@ router.put('/users/:id', async (req, res) => {
 router.get('/users', async (req, res) => {
   const query = 'SELECT * FROM users';
   try {
-    const result = await db.query(query);
+    const result = await performDatabaseOperation(query);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
@@ -46,4 +43,3 @@ router.get('/users', async (req, res) => {
   }
 });
 
-module.exports = router;

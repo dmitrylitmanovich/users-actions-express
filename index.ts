@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import usersService from './services/users-service';
+import { router as usersService } from './services/users-service';
 import userActionsService from './services/users-actions-service';
 
 const app = express();

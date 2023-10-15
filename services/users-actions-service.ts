@@ -1,11 +1,8 @@
 
 import express from 'express';
-import Provider from '../providers/postgresql-provider';
+import performDatabaseOperation from '../providers/pg-performer';
 
 const router = express.Router();
-
-const provider = new Provider();
-const db = provider.connect();
 
 router.post('/', async (req, res) => {
   const { userId, actionType }:
@@ -15,7 +12,7 @@ router.post('/', async (req, res) => {
   const values = [userId, actionType];
 
   try {
-    await db.query(query, values);
+    await performDatabaseOperation(query, values);
     res.json({ message: 'Action recorded successfully' });
   } catch (err) {
     console.error(err);
@@ -25,8 +22,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const { userId, page, pageSize }: 
-          { userId: string; page: string, pageSize: string } = req.query;
+    const { userId, page, pageSize } = req.query;
 
     const limit: number = pageSize ? parseInt(pageSize as string, 10) : 10;
     const offset = page ? (parseInt(page as string, 10) - 1) * limit : 0;
@@ -42,7 +38,7 @@ router.get('/', async (req, res) => {
     query += ' ORDER BY timestamp DESC LIMIT $2 OFFSET $3';
     values.push(limit, offset);
 
-    const result = await db.query(query, values);
+    const result = await performDatabaseOperation(query, values);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
