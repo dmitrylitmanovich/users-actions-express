@@ -1,0 +1,30 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "users-actions_development",
+    "host": "postgres",
+    "dialect": "postgres",
+    "port": 5432,
+    "pool": {
+      "max": 100,
+      "min": 0,
+      "acquire": 10000,
+      "idle": 20000
+    }
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "users-actions_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "users-actions_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

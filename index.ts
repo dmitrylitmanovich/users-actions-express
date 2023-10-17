@@ -1,8 +1,9 @@
-import express from 'express';
-import bodyParser from 'body-parser';
+// @ts-ignore
+const express = require('express');
+const bodyParser = require('body-parser');
 
-import { router as usersService } from './services/users-service';
-import userActionsService from './services/users-actions-service';
+const usersService = require('./src/services/users-service');
+const userActionsService = require('./src/services/users-actions-service.ts');
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,5 +14,5 @@ app.use('/user-actions', userActionsService);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`App is running on port ${PORT}`);
+    console.log(`App is running on port ${PORT}`);
 });
